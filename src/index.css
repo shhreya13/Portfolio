@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-maroon: #4a0404;
+  --color-brand-crimson: #8B1538;
+  --color-card-black: #0a0a0a; /* Pure dark for boxes */
+}
+
+:root {
+  background-color: #1a0101; 
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at 50% 0%, #4a0404 0%, #000000 100%);
+  background-attachment: fixed;
+  color: white;
+  min-height: 100vh;
+}

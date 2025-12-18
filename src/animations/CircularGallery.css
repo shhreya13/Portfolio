@@ -1,0 +1,23 @@
+.circular-gallery {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  background: transparent;
+  /* Fades edges to remove clumsiness */
+  mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+}
+
+.circular-gallery canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.circular-gallery::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.4) 100%);
+}
