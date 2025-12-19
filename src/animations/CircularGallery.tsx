@@ -15,34 +15,20 @@ function autoBind(instance: any) {
   });
 }
 
-/**
- * High-Resolution Text Texture
- * Increased font size to 80px for maximum clarity when scaled up.
- */
 function createTextTexture(gl: any, text: string, font = 'bold 80px sans-serif', color = '#FFFFFF') {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d')!;
-  
   context.font = font;
   const metrics = context.measureText(text);
-  
-  // High-res canvas dimensions
   canvas.width = Math.ceil(metrics.width) + 120;
   canvas.height = 160; 
-
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.font = font;
   context.fillStyle = color;
   context.textBaseline = 'middle';
   context.textAlign = 'center';
-  
-  // Draw solid, bright white text
   context.fillText(text, canvas.width / 2, canvas.height / 2);
-
-  const texture = new Texture(gl, { 
-    generateMipmaps: false,
-    premultiplyAlpha: true 
-  });
+  const texture = new Texture(gl, { generateMipmaps: false, premultiplyAlpha: true });
   texture.image = canvas;
   return { texture, width: canvas.width, height: canvas.height };
 }
@@ -54,39 +40,16 @@ class Title {
     const { texture, width, height } = createTextTexture(gl, text, font, textColor);
     const geometry = new Plane(gl);
     const program = new Program(gl, {
-      vertex: `
-        attribute vec3 position; 
-        attribute vec2 uv; 
-        uniform mat4 modelViewMatrix; 
-        uniform mat4 projectionMatrix; 
-        varying vec2 vUv; 
-        void main() { 
-          vUv = uv; 
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); 
-        }`,
-      fragment: `
-        precision highp float; 
-        uniform sampler2D tMap; 
-        varying vec2 vUv; 
-        void main() { 
-          vec4 color = texture2D(tMap, vUv); 
-          if (color.a < 0.1) discard; 
-          gl_FragColor = color; 
-        }`,
+      vertex: `attribute vec3 position; attribute vec2 uv; uniform mat4 modelViewMatrix; uniform mat4 projectionMatrix; varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+      fragment: `precision highp float; uniform sampler2D tMap; varying vec2 vUv; void main() { vec4 color = texture2D(tMap, vUv); if (color.a < 0.1) discard; gl_FragColor = color; }`,
       uniforms: { tMap: { value: texture } },
       transparent: true
     });
-
     this.mesh = new Mesh(gl, { geometry, program });
-    
-    // INCREASED TEXT SIZE: set to 0.45 of the logo height
     const textHeight = plane.scale.y * 0.3; 
     const aspect = width / height;
     this.mesh.scale.set(textHeight * aspect, textHeight, 1);
-    
-    // POSITION: Moved further down and slightly forward (Z: 0.2) to ensure it's on top
     this.mesh.position.set(0, -plane.scale.y * 0.85, 0.2); 
-    
     this.mesh.setParent(plane);
     this.mesh.renderOrder = 999;
   }
@@ -106,9 +69,7 @@ class Media {
     img.onload = () => { texture.image = img; this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight]; };
     this.plane = new Mesh(gl, { geometry, program: this.program });
     this.plane.setParent(scene);
-
     new Title({ gl, plane: this.plane, text, textColor, font });
-
     Object.assign(this, { index, length, screen, viewport, bend });
     this.onResize({ screen, viewport });
   }
@@ -133,7 +94,6 @@ class Media {
     if (screen) this.screen = screen;
     if (viewport) this.viewport = viewport;
     const scale = this.screen.height / 1800;
-    // Keeping logo size "calm" as requested
     this.plane.scale.y = (this.viewport.height * (380 * scale)) / this.screen.height;
     this.plane.scale.x = (this.viewport.width * (380 * scale)) / this.screen.width;
     this.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
@@ -145,12 +105,12 @@ class Media {
 
 class App {
   renderer: Renderer; gl: any; camera: Camera; scene: Transform; planeGeometry: Plane; medias: Media[] = [];
-  scroll = { ease: 0.1, current: 0, target: 0, last: 0 }; 
+  scroll = { ease: 0.07, current: 0, target: 0, last: 0, position: 0 }; 
   raf: any; isDown = false; start = 0; screen: any; viewport: any;
-  autoPlaySpeed = 0.4; 
+  autoPlaySpeed = 0.3; 
 
   constructor(container: HTMLElement, { items, bend, textColor, borderRadius, font }: any) {
-    this.renderer = new Renderer({ alpha: true, antialias: true, dpr: 2 });
+    this.renderer = new Renderer({ alpha: true, antialias: true, dpr: Math.min(window.devicePixelRatio, 2) });
     this.gl = this.renderer.gl;
     container.appendChild(this.gl.canvas);
     this.camera = new Camera(this.gl, { fov: 45 });
@@ -169,10 +129,38 @@ class App {
 
   addEventListeners(container: HTMLElement) {
     window.addEventListener('resize', this.onResize.bind(this));
-    container.addEventListener('wheel', (e) => { this.scroll.target += e.deltaY * 0.05; }, { passive: true });
-    container.addEventListener('mousedown', (e) => { this.isDown = true; this.start = e.clientX; this.scroll.position = this.scroll.current; });
-    window.addEventListener('mousemove', (e) => { if (!this.isDown) return; this.scroll.target = this.scroll.position + (this.start - e.clientX) * 0.08; });
-    window.addEventListener('mouseup', () => { this.isDown = false; });
+    
+    // Desktop Wheel
+    container.addEventListener('wheel', (e) => { this.scroll.target += e.deltaY * 0.03; }, { passive: true });
+    
+    // Mouse Events
+    container.addEventListener('mousedown', (e) => { this.onDown(e.clientX); });
+    window.addEventListener('mousemove', (e) => { this.onMove(e.clientX, 0.05); });
+    window.addEventListener('mouseup', () => { this.onUp(); });
+
+    // Touch Events (Fix for phone speed)
+    container.addEventListener('touchstart', (e) => { this.onDown(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('touchmove', (e) => { 
+        // multiplier 0.02 is much slower and controllable on mobile
+        this.onMove(e.touches[0].clientX, 0.025); 
+    }, { passive: true });
+    window.addEventListener('touchend', () => { this.onUp(); });
+  }
+
+  onDown(x: number) {
+    this.isDown = true;
+    this.start = x;
+    this.scroll.position = this.scroll.target;
+  }
+
+  onMove(x: number, multiplier: number) {
+    if (!this.isDown) return;
+    const distance = (this.start - x) * multiplier;
+    this.scroll.target = this.scroll.position + distance;
+  }
+
+  onUp() {
+    this.isDown = false;
   }
 
   onResize() {
@@ -207,7 +195,7 @@ export default function CircularGallery({
   bend = 1.2, 
   textColor = '#ffffff', 
   borderRadius = 0.08, 
-  font = 'bold 80px sans-serif' // High default resolution
+  font = 'bold 80px sans-serif'
 }: any) {
   const containerRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<App | null>(null);
@@ -219,6 +207,5 @@ export default function CircularGallery({
     return () => { appRef.current?.destroy(); };
   }, [items, bend, textColor, borderRadius, font]);
 
-  // Height increased to 700px to accommodate large text and "calm" logo size
-  return <div className="circular-gallery w-full h-[600px]" ref={containerRef} />;
+  return <div className="circular-gallery w-full h-[600px] touch-none" ref={containerRef} />;
 }

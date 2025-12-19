@@ -27,7 +27,7 @@ export default function SkillsMatrix() {
   ];
 
   return (
-    <section id="skills" className="relative w-full min-h-screen bg-black flex flex-col items-center justify-center overflow-hidden py-20">
+    <section id="skills" className="relative w-full min-h-screen bg-black flex flex-col items-center justify-center overflow-hidden py-10">
       
       {/* --- LAYER 0: THE LIGHT RAYS (BACKGROUND) --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -41,31 +41,31 @@ export default function SkillsMatrix() {
           followMouse={true}
           mouseInfluence={0.05}
         />
-        {/* Subtle vignette to help text pop */}
         <div className="absolute inset-0 bg-radial-gradient(circle, transparent 20%, black 90%)" />
       </div>
 
-      {/* --- LAYER 1: NAVIGATION (INTERACTIVE) --- */}
-      <div className="relative z-20 flex flex-col md:flex-row gap-8 md:gap-24 mb-12 items-center">
+      {/* --- LAYER 1: NAVIGATION --- */}
+      {/* Changed mb-12 to mb-2 to decrease distance to gallery */}
+      <div className="relative z-20 flex flex-col md:flex-row gap-6 md:gap-16 mb-2 items-center">
         <button 
           onClick={() => setActiveTab('technical')}
-          className={`text-3xl md:text-4xl font-black uppercase tracking-tighter transition-all duration-500 ${
+          className={`text-xl md:text-2xl font-black uppercase tracking-tighter transition-all duration-500 ${
             activeTab === 'technical' 
-              ? 'text-white scale-110 drop-shadow-[0_0_30px_rgba(139,21,56,1)]' 
-              : 'text-zinc-500 hover:text-zinc-500'
+              ? 'text-white scale-105 drop-shadow-[0_0_20px_rgba(139,21,56,0.8)]' 
+              : 'text-zinc-600 hover:text-zinc-400'
           }`}
         >
           Technical
         </button>
 
-        <div className="hidden md:block w-1 h-16 bg-zinc-600/50 rotate-[20deg]" />
+        <div className="hidden md:block w-[1px] h-10 bg-zinc-600/50 rotate-[20deg]" />
 
         <button 
           onClick={() => setActiveTab('non-technical')}
-          className={`text-3xl md:text-4xl font-black uppercase tracking-tighter transition-all duration-500 ${
+          className={`text-xl md:text-2xl font-black uppercase tracking-tighter transition-all duration-500 ${
             activeTab === 'non-technical' 
-              ? 'text-white scale-110 drop-shadow-[0_0_30px_rgba(139,21,56,1)]' 
-              : 'text-zinc-800 hover:text-zinc-600'
+              ? 'text-white scale-105 drop-shadow-[0_0_20px_rgba(139,21,56,0.8)]' 
+              : 'text-zinc-600 hover:text-zinc-400'
           }`}
         >
           Professional
@@ -73,18 +73,18 @@ export default function SkillsMatrix() {
       </div>
 
       {/* --- LAYER 2: CIRCULAR GALLERY --- */}
-      <div className="relative z-10 w-full h-[550px]">
+      <div className="relative z-10 w-full h-[450px]">
         <CircularGallery 
           key={activeTab} 
           items={activeTab === 'technical' ? technicalSkills : softSkills} 
-          bend={1.5} 
-          font="900 80px Inter, sans-serif" 
+          bend={1.2} 
+          font="900 48px Inter, sans-serif" 
         />
       </div>
 
       {/* Help Hint */}
-      <div className="relative z-20 mt-8">
-        <p className="text-[10px] uppercase tracking-[1.2em] text-zinc-600 font-bold animate-pulse">
+      <div className="relative z-20 mt-2">
+        <p className="text-[8px] uppercase tracking-[1em] text-zinc-600 font-bold animate-pulse">
           Drag horizontally
         </p>
       </div>
