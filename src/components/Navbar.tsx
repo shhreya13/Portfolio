@@ -30,7 +30,7 @@ export default function Navbar() {
       const link = document.createElement('a');
       link.href = resumePath;
       // This is the name the recruiter sees when they download it
-      link.download = 'Shreya_Venkatesan_Resume.pdf'; 
+      link.download = 'resume.pdf'; 
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       document.body.appendChild(link);
@@ -68,7 +68,7 @@ export default function Navbar() {
               <a href="https://github.com/shhreya13" target="_blank" rel="noreferrer" className="hover:text-[#8B1538] transition-colors">Github</a>
               <a href={linkedinUrl} target="_blank" rel="noreferrer" className="hover:text-[#8B1538] transition-colors">Linkedin</a>
             </div>
-            <span>Open for Collaboration — 2025</span>
+            <span>Open for Collaboration </span>
           </div>
         )}
 
