@@ -75,7 +75,7 @@ export default function ExperienceTimeline() {
     { 
       icon: Briefcase, 
       title: 'AI Intern', 
-      company: 'Infosys', 
+      company: 'Infosys Springboard', 
       period: 'Sep 2025 - Dec 2025', 
       description: 'Developed AI/ML pipelines and NLP models for automated text extraction.' 
     },
@@ -88,8 +88,8 @@ export default function ExperienceTimeline() {
     },
     { 
       icon: Award, 
-      title: '1M1B Green Skill Intern', 
-      company: 'Top Intern', 
+      title: 'AI & Green Skill Intern', 
+      company: '1M1B', 
       period: 'Aug 2025 - Sep 2025', 
       description: 'Selected as Top Intern; applied sustainable technology practices for environmental impact.' 
     },
