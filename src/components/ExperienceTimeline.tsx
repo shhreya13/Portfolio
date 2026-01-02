@@ -58,6 +58,20 @@ const Threads: React.FC<{ color?: string }> = ({ color = "#8B1538" }) => {
 
 export default function ExperienceTimeline() {
   const experiences = [
+    { 
+      icon: ShieldCheck, 
+      title: 'Cybersecurity & Generative AI Intern', 
+      company: 'VOIS & Vodafone Idea Foundation', 
+      period: 'Dec 2025- Jan 2026 (Ongoing)', 
+      description: 'Exploring the intersection of GenAI and security to identify vulnerabilities and enhance threat detection mechanisms.' 
+    },
+    { 
+      icon: Cloud, 
+      title: 'MS Elevate Azure Intern', 
+      company: 'Microsoft (AICTE)', 
+      period: 'Dec 2025- Jan 2026 (Ongoing)', 
+      description: 'Upskilling in cloud architecture, deploying scalable solutions, and mastering Azure services through the Microsoft Elevate program.' 
+    },
     { icon: Briefcase, title: 'AI Intern', company: 'Infosys', period: 'Sep 2025 - Dec 2025', description: 'Developed AI/ML pipelines and NLP models for automated text extraction.' },
     { icon: Briefcase, title: 'Java Developer Intern', company: 'VaultofCodes', period: 'Jul-Aug 2025', description: 'Developed Java backend features and APIs to support dynamic web applications.' },
     { icon: Award, title: '1M1B Green Skill Intern', company: 'Top Intern', period: 'Aug 2025 - Sep 2025', description: 'Selected as Top Intern; applied sustainable technology practices for environmental impact.' },
