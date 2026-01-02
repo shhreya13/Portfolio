@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Briefcase, Award, Users } from 'lucide-react';
+import { Briefcase, Award, Users, ShieldCheck, Cloud } from 'lucide-react';
 
 // --- Threads Component (Optimized for Black BG) ---
 const Threads: React.FC<{ color?: string }> = ({ color = "#8B1538" }) => {
@@ -31,7 +31,7 @@ const Threads: React.FC<{ color?: string }> = ({ color = "#8B1538" }) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.strokeStyle = color;
       ctx.lineWidth = 1.5;         
-      ctx.globalAlpha = 0.18; // Slightly increased for visibility on black
+      ctx.globalAlpha = 0.18; 
       
       lines.forEach((line) => {
         ctx.beginPath();
@@ -62,26 +62,48 @@ export default function ExperienceTimeline() {
       icon: ShieldCheck, 
       title: 'Cybersecurity & Generative AI Intern', 
       company: 'VOIS & Vodafone Idea Foundation', 
-      period: 'Dec 2025- Jan 2026 (Ongoing)', 
+      period: 'Present (Ongoing)', 
       description: 'Exploring the intersection of GenAI and security to identify vulnerabilities and enhance threat detection mechanisms.' 
     },
     { 
       icon: Cloud, 
       title: 'MS Elevate Azure Intern', 
       company: 'Microsoft (AICTE)', 
-      period: 'Dec 2025- Jan 2026 (Ongoing)', 
+      period: 'Present (Ongoing)', 
       description: 'Upskilling in cloud architecture, deploying scalable solutions, and mastering Azure services through the Microsoft Elevate program.' 
     },
-    { icon: Briefcase, title: 'AI Intern', company: 'Infosys', period: 'Sep 2025 - Dec 2025', description: 'Developed AI/ML pipelines and NLP models for automated text extraction.' },
-    { icon: Briefcase, title: 'Java Developer Intern', company: 'VaultofCodes', period: 'Jul-Aug 2025', description: 'Developed Java backend features and APIs to support dynamic web applications.' },
-    { icon: Award, title: '1M1B Green Skill Intern', company: 'Top Intern', period: 'Aug 2025 - Sep 2025', description: 'Selected as Top Intern; applied sustainable technology practices for environmental impact.' },
-    { icon: Users, title: 'Campus Ambassador', company: 'E-Cell, IIT Bombay', period: 'Jun 2025 - Nov 2025', description: 'Led outreach campaigns and startup promotions to 1,000+ students.' },
+    { 
+      icon: Briefcase, 
+      title: 'AI Intern', 
+      company: 'Infosys', 
+      period: 'Sep 2025 - Dec 2025', 
+      description: 'Developed AI/ML pipelines and NLP models for automated text extraction.' 
+    },
+    { 
+      icon: Briefcase, 
+      title: 'Java Developer Intern', 
+      company: 'VaultofCodes', 
+      period: 'Jul-Aug 2025', 
+      description: 'Developed Java backend features and APIs to support dynamic web applications.' 
+    },
+    { 
+      icon: Award, 
+      title: '1M1B Green Skill Intern', 
+      company: 'Top Intern', 
+      period: 'Aug 2025 - Sep 2025', 
+      description: 'Selected as Top Intern; applied sustainable technology practices for environmental impact.' 
+    },
+    { 
+      icon: Users, 
+      title: 'Campus Ambassador', 
+      company: 'E-Cell, IIT Bombay', 
+      period: 'Jun 2025 - Nov 2025', 
+      description: 'Led outreach campaigns and startup promotions to 1,000+ students.' 
+    },
   ];
 
   return (
-    // Background changed to bg-black
     <section id="experience" className="relative py-24 px-4 bg-black overflow-hidden">
-      {/* Darker Vignette for a clean look */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] pointer-events-none" />
       
       <Threads color="#8B1538" />
@@ -93,7 +115,6 @@ export default function ExperienceTimeline() {
         </header>
 
         <div className="relative">
-          {/* Glowing central line */}
           <div 
             className="absolute left-4 sm:left-1/2 top-0 bottom-0 w-1 bg-[#8B1538] sm:-translate-x-1/2 z-0"
             style={{ boxShadow: '0 0 20px #8B1538', opacity: 0.8 }}
@@ -109,7 +130,6 @@ export default function ExperienceTimeline() {
             >
               <div className="hidden sm:block w-1/2" />
 
-              {/* Dot Icon */}
               <div className="absolute left-4 sm:left-1/2 w-12 h-12 -translate-x-1/2 bg-black border-2 border-[#8B1538] rounded-full flex items-center justify-center z-20 shadow-[0_0_20px_#8B1538]">
                 <exp.icon className="w-5 h-5 text-white" />
               </div>
